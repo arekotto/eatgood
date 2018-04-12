@@ -34,26 +34,29 @@
         <scene sceneID="z3y-lQ-ClI">
             <objects>
                 <tableViewController title="Top Rated" id="WPz-hD-EJb" customClass="TopRatedTVC" customModule="Eat_Good" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="gq9-bq-00n">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="400" estimatedRowHeight="400" sectionHeaderHeight="28" sectionFooterHeight="28" id="gq9-bq-00n">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="foodCell" rowHeight="300" id="vJy-Bv-nNc" customClass="LargeFoodTableCell" customModule="Eat_Good" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="300"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="foodCell" rowHeight="400" id="vJy-Bv-nNc" customClass="LargeFoodTableCell" customModule="Eat_Good" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="400"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vJy-Bv-nNc" id="zrF-EE-7Ns">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c9y-Mc-KXh">
-                                            <rect key="frame" x="16" y="15" width="343" height="270"/>
+                                            <rect key="frame" x="16" y="15" width="343" height="370"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hamburger" translatesAutoresizingMaskIntoConstraints="NO" id="S7C-UT-9q0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="270"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="S7C-UT-9q0">
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="370"/>
                                                 </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="MAl-c0-nBd">
+                                                    <rect key="frame" x="0.0" y="175" width="343" height="20"/>
+                                                </activityIndicatorView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="lnj-nw-9MR">
-                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="270"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="343" height="370"/>
                                                     <subviews>
                                                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mRU-6l-tMr">
                                                             <rect key="frame" x="0.0" y="0.0" width="343" height="63"/>
@@ -81,7 +84,7 @@
                                                             <blurEffect style="dark"/>
                                                         </visualEffectView>
                                                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Psa-dT-50P">
-                                                            <rect key="frame" x="0.0" y="220" width="343" height="50"/>
+                                                            <rect key="frame" x="0.0" y="320" width="343" height="50"/>
                                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Kty-ae-6WZ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -113,9 +116,11 @@
                                                 <constraint firstAttribute="trailing" secondItem="lnj-nw-9MR" secondAttribute="trailing" id="7FI-Da-dgV"/>
                                                 <constraint firstAttribute="trailing" secondItem="S7C-UT-9q0" secondAttribute="trailing" id="D14-nu-8fO"/>
                                                 <constraint firstItem="lnj-nw-9MR" firstAttribute="leading" secondItem="c9y-Mc-KXh" secondAttribute="leading" id="GmW-ZE-5c3"/>
+                                                <constraint firstItem="MAl-c0-nBd" firstAttribute="centerX" secondItem="c9y-Mc-KXh" secondAttribute="centerX" id="Hef-6H-aUV"/>
                                                 <constraint firstAttribute="bottom" secondItem="lnj-nw-9MR" secondAttribute="bottom" id="U3I-FC-8Dc"/>
                                                 <constraint firstAttribute="bottom" secondItem="S7C-UT-9q0" secondAttribute="bottom" id="WAU-u1-qjr"/>
                                                 <constraint firstItem="S7C-UT-9q0" firstAttribute="top" secondItem="c9y-Mc-KXh" secondAttribute="top" id="WpP-Iy-eLY"/>
+                                                <constraint firstItem="MAl-c0-nBd" firstAttribute="centerY" secondItem="c9y-Mc-KXh" secondAttribute="centerY" id="hf0-PM-VCq"/>
                                                 <constraint firstItem="lnj-nw-9MR" firstAttribute="top" secondItem="c9y-Mc-KXh" secondAttribute="top" id="tJx-KU-tRY"/>
                                                 <constraint firstItem="S7C-UT-9q0" firstAttribute="leading" secondItem="c9y-Mc-KXh" secondAttribute="leading" id="yHJ-K4-uQH"/>
                                             </constraints>
@@ -130,6 +135,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
+                                    <outlet property="activityIndicator" destination="MAl-c0-nBd" id="Uzs-ta-wpW"/>
                                     <outlet property="effectView" destination="Psa-dT-50P" id="QXo-3q-B6w"/>
                                     <outlet property="foodImageView" destination="S7C-UT-9q0" id="xhR-hi-Doz"/>
                                     <outlet property="pubisherLabel" destination="xGC-cc-czx" id="vVR-wj-DR3"/>
@@ -310,7 +316,4 @@
             <point key="canvasLocation" x="446" y="1924"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="hamburger" width="360" height="360"/>
-    </resources>
 </document>
