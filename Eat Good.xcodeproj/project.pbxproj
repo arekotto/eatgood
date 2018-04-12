@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F4EA360AB000BD41A72A4B5 /* Pods_Eat_Good.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBB75753DEA532E002293704 /* Pods_Eat_Good.framework */; };
 		45CD42E1207D38E700B3597B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD42E0207D38E700B3597B /* AppDelegate.swift */; };
-		45CD42E3207D38E700B3597B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD42E2207D38E700B3597B /* ViewController.swift */; };
+		45CD42E3207D38E700B3597B /* TopRatedTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD42E2207D38E700B3597B /* TopRatedTVC.swift */; };
 		45CD42E6207D38E700B3597B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CD42E4207D38E700B3597B /* Main.storyboard */; };
 		45CD42E9207D38E700B3597B /* Eat_Good.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45CD42E7207D38E700B3597B /* Eat_Good.xcdatamodeld */; };
 		45CD42EB207D38E800B3597B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45CD42EA207D38E800B3597B /* Assets.xcassets */; };
@@ -16,14 +17,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1483F5DA84097FC74666D028 /* Pods-Eat Good.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eat Good.release.xcconfig"; path = "Pods/Target Support Files/Pods-Eat Good/Pods-Eat Good.release.xcconfig"; sourceTree = "<group>"; };
 		45CD42DD207D38E700B3597B /* Eat Good.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eat Good.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		45CD42E0207D38E700B3597B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		45CD42E2207D38E700B3597B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		45CD42E2207D38E700B3597B /* TopRatedTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedTVC.swift; sourceTree = "<group>"; };
 		45CD42E5207D38E700B3597B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		45CD42E8207D38E700B3597B /* Eat_Good.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Eat_Good.xcdatamodel; sourceTree = "<group>"; };
 		45CD42EA207D38E800B3597B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45CD42ED207D38E800B3597B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		45CD42EF207D38E800B3597B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68C5AB5CB1F58F894EAA406E /* Pods-Eat Good.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eat Good.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eat Good/Pods-Eat Good.debug.xcconfig"; sourceTree = "<group>"; };
+		EBB75753DEA532E002293704 /* Pods_Eat_Good.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eat_Good.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +35,35 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F4EA360AB000BD41A72A4B5 /* Pods_Eat_Good.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15AAC0EB5F3EE01DD99EE5B6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EBB75753DEA532E002293704 /* Pods_Eat_Good.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45ACFE5A207FBB0100D3FA3B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		45CD42D4207D38E600B3597B = {
 			isa = PBXGroup;
 			children = (
 				45CD42DF207D38E700B3597B /* Eat Good */,
 				45CD42DE207D38E700B3597B /* Products */,
+				5FFB561DEFF377B34B2A67FF /* Pods */,
+				15AAC0EB5F3EE01DD99EE5B6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,8 +78,9 @@
 		45CD42DF207D38E700B3597B /* Eat Good */ = {
 			isa = PBXGroup;
 			children = (
+				45ACFE5A207FBB0100D3FA3B /* Model */,
 				45CD42E0207D38E700B3597B /* AppDelegate.swift */,
-				45CD42E2207D38E700B3597B /* ViewController.swift */,
+				45CD42E2207D38E700B3597B /* TopRatedTVC.swift */,
 				45CD42E4207D38E700B3597B /* Main.storyboard */,
 				45CD42EA207D38E800B3597B /* Assets.xcassets */,
 				45CD42EC207D38E800B3597B /* LaunchScreen.storyboard */,
@@ -67,6 +90,15 @@
 			path = "Eat Good";
 			sourceTree = "<group>";
 		};
+		5FFB561DEFF377B34B2A67FF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				68C5AB5CB1F58F894EAA406E /* Pods-Eat Good.debug.xcconfig */,
+				1483F5DA84097FC74666D028 /* Pods-Eat Good.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,6 +106,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 45CD42F2207D38E800B3597B /* Build configuration list for PBXNativeTarget "Eat Good" */;
 			buildPhases = (
+				0CB2C482DC15AB635B695D9D /* [CP] Check Pods Manifest.lock */,
 				45CD42D9207D38E600B3597B /* Sources */,
 				45CD42DA207D38E600B3597B /* Frameworks */,
 				45CD42DB207D38E600B3597B /* Resources */,
@@ -133,12 +166,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0CB2C482DC15AB635B695D9D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Eat Good-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		45CD42D9207D38E600B3597B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45CD42E3207D38E700B3597B /* ViewController.swift in Sources */,
+				45CD42E3207D38E700B3597B /* TopRatedTVC.swift in Sources */,
 				45CD42E1207D38E700B3597B /* AppDelegate.swift in Sources */,
 				45CD42E9207D38E700B3597B /* Eat_Good.xcdatamodeld in Sources */,
 			);
@@ -282,11 +336,13 @@
 		};
 		45CD42F3207D38E800B3597B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68C5AB5CB1F58F894EAA406E /* Pods-Eat Good.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8G2L6RFG46;
 				INFOPLIST_FILE = "Eat Good/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -300,11 +356,13 @@
 		};
 		45CD42F4207D38E800B3597B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1483F5DA84097FC74666D028 /* Pods-Eat Good.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8G2L6RFG46;
 				INFOPLIST_FILE = "Eat Good/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
