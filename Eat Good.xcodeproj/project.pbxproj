@@ -21,6 +21,10 @@
 		45CD42E9207D38E700B3597B /* Eat_Good.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45CD42E7207D38E700B3597B /* Eat_Good.xcdatamodeld */; };
 		45CD42EB207D38E800B3597B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45CD42EA207D38E800B3597B /* Assets.xcassets */; };
 		45CD42EE207D38E800B3597B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45CD42EC207D38E800B3597B /* LaunchScreen.storyboard */; };
+		45D4C3742081264000F2C833 /* ExploreTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4C3732081264000F2C833 /* ExploreTVC.swift */; };
+		45D4C3762081419900F2C833 /* TitleTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4C3752081419900F2C833 /* TitleTableCell.swift */; };
+		45D4C3782081428E00F2C833 /* FollowedFoodsEditTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4C3772081428E00F2C833 /* FollowedFoodsEditTVC.swift */; };
+		45D4C37A2081597800F2C833 /* FollowedFoodManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D4C3792081597800F2C833 /* FollowedFoodManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +44,10 @@
 		45CD42EA207D38E800B3597B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45CD42ED207D38E800B3597B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		45CD42EF207D38E800B3597B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		45D4C3732081264000F2C833 /* ExploreTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreTVC.swift; sourceTree = "<group>"; };
+		45D4C3752081419900F2C833 /* TitleTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableCell.swift; sourceTree = "<group>"; };
+		45D4C3772081428E00F2C833 /* FollowedFoodsEditTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowedFoodsEditTVC.swift; sourceTree = "<group>"; };
+		45D4C3792081597800F2C833 /* FollowedFoodManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowedFoodManager.swift; sourceTree = "<group>"; };
 		68C5AB5CB1F58F894EAA406E /* Pods-Eat Good.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Eat Good.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Eat Good/Pods-Eat Good.debug.xcconfig"; sourceTree = "<group>"; };
 		EBB75753DEA532E002293704 /* Pods_Eat_Good.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Eat_Good.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -79,6 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				45CD42E2207D38E700B3597B /* TopRatedTVC.swift */,
+				45D4C3732081264000F2C833 /* ExploreTVC.swift */,
+				45D4C3772081428E00F2C833 /* FollowedFoodsEditTVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -96,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				455C2A4C207FE95E0060BBF2 /* LargeFoodTableCell.swift */,
+				45D4C3752081419900F2C833 /* TitleTableCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -104,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				455C2A50207FE9AC0060BBF2 /* ImageCache.swift */,
+				45D4C3792081597800F2C833 /* FollowedFoodManager.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -253,14 +265,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45D4C3782081428E00F2C833 /* FollowedFoodsEditTVC.swift in Sources */,
 				455C2A51207FE9AC0060BBF2 /* ImageCache.swift in Sources */,
+				45D4C3742081264000F2C833 /* ExploreTVC.swift in Sources */,
 				45CD42E3207D38E700B3597B /* TopRatedTVC.swift in Sources */,
 				45CD42E1207D38E700B3597B /* AppDelegate.swift in Sources */,
 				45037EA3207FD877001B4F09 /* ImageRetriever.swift in Sources */,
+				45D4C3762081419900F2C833 /* TitleTableCell.swift in Sources */,
 				45037EA0207FCAE3001B4F09 /* FoodToForkApi.swift in Sources */,
 				45037E9C207FC5AC001B4F09 /* RecipeRetriever.swift in Sources */,
 				455C2A4D207FE95E0060BBF2 /* LargeFoodTableCell.swift in Sources */,
 				45037E97207FC307001B4F09 /* Recipe.swift in Sources */,
+				45D4C37A2081597800F2C833 /* FollowedFoodManager.swift in Sources */,
 				45037E9A207FC47E001B4F09 /* RequestSubmitter.swift in Sources */,
 				45CD42E9207D38E700B3597B /* Eat_Good.xcdatamodeld in Sources */,
 			);
