@@ -24,11 +24,6 @@ class FavoritesTVC: UITableViewController {
         tableView.reloadData()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -44,6 +39,11 @@ class FavoritesTVC: UITableViewController {
         let favoriteRecipe = favoriteRecipes[indexPath.row]
         cell.setup(title: favoriteRecipe.title, publisher: favoriteRecipe.publisher, image: favoriteRecipe.image)
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let favoriteRecipe = favoriteRecipes[indexPath.row]
+        pushRecipeDetailsTVC(recipe: favoriteRecipe.extractRecipe(), image: favoriteRecipe.image, ingredients: favoriteRecipe.ingredients)
     }
 
 }

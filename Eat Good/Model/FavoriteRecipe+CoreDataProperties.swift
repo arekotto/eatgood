@@ -11,20 +11,22 @@ import Foundation
 import CoreData
 
 extension FavoriteRecipe {
+    
+    static let entityName = "FavoriteRecipe"
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<FavoriteRecipe> {
-        return NSFetchRequest<FavoriteRecipe>(entityName: "FavoriteRecipe")
+        return NSFetchRequest<FavoriteRecipe>(entityName: entityName)
     }
     
     @nonobjc public class func fetchRequest(withId id: String) -> NSFetchRequest<FavoriteRecipe> {
-        let fetchRequest = NSFetchRequest<FavoriteRecipe>(entityName: "FavoriteRecipe")
+        let fetchRequest = NSFetchRequest<FavoriteRecipe>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "recipeId == %@", id)
         return fetchRequest
     }
 
     @NSManaged public var recipeId: String
     @NSManaged public var publisher: String
-    @NSManaged public var ingredients: [String]
+    @NSManaged public var ingredients: [String]?
     @NSManaged public var userRating: Double
     @NSManaged public var publisherUrl: String
     @NSManaged public var sourceUrl: String

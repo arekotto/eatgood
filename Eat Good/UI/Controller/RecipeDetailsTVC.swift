@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class RecipeDetailsTVC: UITableViewController {
     
@@ -19,18 +20,34 @@ class RecipeDetailsTVC: UITableViewController {
     @IBOutlet weak var publisherLabel: UILabel!
 
     private var recipe: Recipe!
+    private var ingredients: [String]?
     private var image: UIImage?
     
+    private var moc = CoreDataManager.persistentContainer.viewContext
+    
+    private var recipeAsManagedObject: FavoriteRecipe? {
+        guard let recipeId = recipe?.recipeId else { return nil }
+        return (try? moc.fetch(FavoriteRecipe.fetchRequest(withId: recipeId)))?.first
+    }
+    
     private var existsInCoreData: Bool {
-        guard let recipeId = recipe?.recipeId else { return false }
-        let moc = CoreDataManager.persistentContainer.viewContext
-        return (try? moc.fetch(FavoriteRecipe.fetchRequest(withId: recipeId)))?.first != nil
+        return recipeAsManagedObject != nil
+    }
+    
+    private var ingredientsDisplayString: String? {
+        guard let ingredients = self.ingredients else { return nil }
+        let bulletPointPrefix = "\u{2022}  "
+        return (ingredients.map{bulletPointPrefix + $0} as NSArray).componentsJoined(by: "\n")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fetchIngredeints()
+        if ingredients == nil {
+            fetchIngredients()
+        } else {
+            ingredientsLabel.text = ingredientsDisplayString
+        }
         
         if image == nil, let imageUrl = recipe.imageUrl {
             fetchImage(url: imageUrl)
@@ -38,18 +55,20 @@ class RecipeDetailsTVC: UITableViewController {
             foodImageView.image = image
         }
         
-        if existsInCoreData {
-            
-        }
-        
         titleLabel.text = recipe.title
         publisherLabel.text = recipe.publisher
         ratingLabel.text = String.localizedStringWithFormat("%.2f", recipe.socialRank)
     }
     
-    func setup(with recipe: Recipe, and image: UIImage? = nil) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        favoriteButton.image = existsInCoreData ? UIImage(named: "FavoriteButtonIcon") : UIImage(named: "FavoriteBorderButtonIcon")
+    }
+    
+    func setup(recipe: Recipe, ingredients: [String]? = nil , image: UIImage? = nil) {
         self.recipe = recipe
         self.image = image
+        self.ingredients = ingredients
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -64,28 +83,47 @@ class RecipeDetailsTVC: UITableViewController {
     
     func fetchImage(url: String) {
         ImageRetriever().retrieveImage(urlString: url) {
-            self.image = $0
+            guard let image = $0 else { return }
+            self.image = image
             DispatchQueue.main.async {
+                self.foodImageView.image = image
                 self.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
+                if let favRecipe = self.recipeAsManagedObject {
+                    favRecipe.image = image
+                    try? self.moc.save()
+                }
             }
         }
     }
     
-    func fetchIngredeints() {
+    func fetchIngredients() {
         RecipeSearchRetriever().retrieveIngredients(recipeId: recipe.recipeId) {
             guard let ingredients = $0 else { return }
+            self.ingredients = ingredients
             DispatchQueue.main.async {
-                let bulletPoint = "\u{2022}  "
-                self.ingredientsLabel.text = (ingredients.map{bulletPoint + $0} as NSArray).componentsJoined(by: "\n")
+                self.ingredientsLabel.text = self.ingredientsDisplayString
                 self.tableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .none)
+                if let favRecipe = self.recipeAsManagedObject {
+                    favRecipe.ingredients = ingredients
+                    try? self.moc.save()
+                }
             }
         }
     }
     
     @IBAction func favoriteButtonTapped(_ sender: UIBarButtonItem) {
+        if existsInCoreData {
+            moc.delete(recipeAsManagedObject!)
+            favoriteButton.image = UIImage(named: "FavoriteBorderButtonIcon")
+        } else {
+            let favoriteRecipe = NSEntityDescription.insertNewObject(forEntityName: FavoriteRecipe.entityName, into: moc) as! FavoriteRecipe
+            favoriteRecipe.update(basedOn: recipe, ingredients: ingredients, image: image)
+            favoriteButton.image = UIImage(named: "FavoriteButtonIcon")
+        }
+        try! moc.save()
     }
     
-
+    
 }
 
 class ImageTableCell: UITableViewCell {

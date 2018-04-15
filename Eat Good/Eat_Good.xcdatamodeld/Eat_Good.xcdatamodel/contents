@@ -3,13 +3,18 @@
     <entity name="FavoriteRecipe" representedClassName="FavoriteRecipe" syncable="YES">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="ingredients" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
+        <attribute name="ingredients" optional="YES" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
         <attribute name="publisher" attributeType="String" syncable="YES"/>
         <attribute name="publisherUrl" attributeType="String" syncable="YES"/>
         <attribute name="recipeId" attributeType="String" syncable="YES"/>
         <attribute name="sourceUrl" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="userRating" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="recipeId"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
         <element name="FavoriteRecipe" positionX="-63" positionY="-18" width="128" height="180"/>
