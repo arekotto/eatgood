@@ -69,10 +69,10 @@ class FavoritesTVC: UITableViewController {
     func updateEditingButton() {
         if tableView.isEditing {
             let title = NSLocalizedString("Done", comment: "")
-            navigationItem.leftBarButtonItems = [UIBarButtonItem(title: title, style: .done, target: self, action: #selector(editingButtonTapped))]
+            navigationItem.setLeftBarButton(UIBarButtonItem(title: title, style: .done, target: self, action: #selector(editingButtonTapped)), animated: true)
         } else {
             let title = NSLocalizedString("Edit", comment: "")
-            navigationItem.leftBarButtonItems = [UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(editingButtonTapped))]
+            navigationItem.setLeftBarButton(UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(editingButtonTapped)), animated: true)
         }
     }
 }

@@ -120,6 +120,13 @@ class RecipeDetailsTVC: UITableViewController {
         }
         try! moc.save()
     }
+    
+    @IBAction func shareButtonTapped(_ sender: UIButton) {
+        let activityItems = [URL(string: recipe.sourceUrl)!]
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = sender
+        present(activityViewController, animated: true, completion: nil)
+    }
 }
 
 class ImageTableCell: UITableViewCell {
