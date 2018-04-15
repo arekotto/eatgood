@@ -87,11 +87,10 @@ class RecipeDetailsTVC: UITableViewController {
             self.image = image
             DispatchQueue.main.async {
                 self.foodImageView.image = image
-                self.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .automatic)
-                if let favRecipe = self.recipeAsManagedObject {
-                    favRecipe.image = image
-                    try? self.moc.save()
-                }
+                self.tableView.reloadRows(at: [IndexPath(row: 1, section: 0)], with: .none)
+                guard let favRecipe = self.recipeAsManagedObject else { return }
+                favRecipe.image = image
+                try? self.moc.save()
             }
         }
     }
@@ -103,10 +102,9 @@ class RecipeDetailsTVC: UITableViewController {
             DispatchQueue.main.async {
                 self.ingredientsLabel.text = self.ingredientsDisplayString
                 self.tableView.reloadRows(at: [IndexPath(row: 1, section: 1)], with: .none)
-                if let favRecipe = self.recipeAsManagedObject {
-                    favRecipe.ingredients = ingredients
-                    try? self.moc.save()
-                }
+                guard let favRecipe = self.recipeAsManagedObject else { return }
+                favRecipe.ingredients = ingredients
+                try? self.moc.save()
             }
         }
     }
@@ -122,8 +120,6 @@ class RecipeDetailsTVC: UITableViewController {
         }
         try! moc.save()
     }
-    
-    
 }
 
 class ImageTableCell: UITableViewCell {
@@ -133,7 +129,6 @@ class ImageTableCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         foodImageView.layer.cornerRadius = 10
-
     }
 }
 

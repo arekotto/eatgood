@@ -17,7 +17,7 @@ class TopRatedTVC: UITableViewController {
     private var imageCache = Cache<UIImage>(maxSize: 20)
     
     private var apiPageIndex = 1
-    private var maxApiPageIndex = 5
+    private let maxApiPageIndex = 5
 
     private let detailsSegueId = "showDetails"
     
@@ -45,6 +45,8 @@ class TopRatedTVC: UITableViewController {
         imageCache.removeAll()
         recipes.removeAll()
         apiPageIndex = 1
+        lastRefresh = nil
+        tableView.reloadData()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
