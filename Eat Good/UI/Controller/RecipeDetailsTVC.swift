@@ -42,6 +42,7 @@ class RecipeDetailsTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.view.backgroundColor = .white
         
         if ingredients == nil {
             fetchIngredients()
@@ -65,6 +66,14 @@ class RecipeDetailsTVC: UITableViewController {
         favoriteButton.image = existsInCoreData ? UIImage(named: "FavoriteButtonIcon") : UIImage(named: "FavoriteBorderButtonIcon")
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let segueId = segue.identifier else { return }
+        if segueId == "showImage" {
+            guard let img = image else { return }
+            (segue.destination as! ImageVC).setup(with: img)
+        }
+    }
+    
     func setup(recipe: Recipe, ingredients: [String]? = nil , image: UIImage? = nil) {
         self.recipe = recipe
         self.image = image
@@ -73,12 +82,16 @@ class RecipeDetailsTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard indexPath.section == 2 else { return }
-        if indexPath.row == 3 {
-            UIApplication.shared.open(URL(string : recipe.publisherUrl)!)
-        } else if indexPath.row == 4 {
-            UIApplication.shared.open(URL(string : recipe.sourceUrl)!)
+        if indexPath.section == 0 {
+            performSegue(withIdentifier: "showImage", sender: self)
+        } else if indexPath.section == 2 {
+            if indexPath.row == 3 {
+                UIApplication.shared.open(URL(string : recipe.publisherUrl)!)
+            } else if indexPath.row == 4 {
+                UIApplication.shared.open(URL(string : recipe.sourceUrl)!)
+            }
         }
+
     }
     
     func fetchImage(url: String) {

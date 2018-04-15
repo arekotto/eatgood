@@ -13,6 +13,7 @@
 		45037E9C207FC5AC001B4F09 /* RecipeRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45037E9B207FC5AC001B4F09 /* RecipeRetriever.swift */; };
 		45037EA0207FCAE3001B4F09 /* FoodToForkApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45037E9F207FCAE3001B4F09 /* FoodToForkApi.swift */; };
 		45037EA3207FD877001B4F09 /* ImageRetriever.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45037EA2207FD877001B4F09 /* ImageRetriever.swift */; };
+		45185CAD2083F3F200870371 /* ImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45185CAC2083F3F100870371 /* ImageVC.swift */; };
 		4535DF0220823260008EEC8B /* RecipeSearchTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535DF0120823260008EEC8B /* RecipeSearchTVC.swift */; };
 		4535DF0420823B43008EEC8B /* RecipeDetailsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535DF0320823B43008EEC8B /* RecipeDetailsTVC.swift */; };
 		4535DF0620823D7E008EEC8B /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4535DF0520823D7E008EEC8B /* UIViewController+Extensions.swift */; };
@@ -43,6 +44,7 @@
 		45037E9B207FC5AC001B4F09 /* RecipeRetriever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeRetriever.swift; sourceTree = "<group>"; };
 		45037E9F207FCAE3001B4F09 /* FoodToForkApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodToForkApi.swift; sourceTree = "<group>"; };
 		45037EA2207FD877001B4F09 /* ImageRetriever.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRetriever.swift; sourceTree = "<group>"; };
+		45185CAC2083F3F100870371 /* ImageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageVC.swift; sourceTree = "<group>"; };
 		4535DF0120823260008EEC8B /* RecipeSearchTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSearchTVC.swift; sourceTree = "<group>"; };
 		4535DF0320823B43008EEC8B /* RecipeDetailsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailsTVC.swift; sourceTree = "<group>"; };
 		4535DF0520823D7E008EEC8B /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				4535DF0120823260008EEC8B /* RecipeSearchTVC.swift */,
 				45A744022083582700718839 /* FavoritesTVC.swift */,
 				4535DF0320823B43008EEC8B /* RecipeDetailsTVC.swift */,
+				45185CAC2083F3F100870371 /* ImageVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				45A744032083582700718839 /* FavoritesTVC.swift in Sources */,
 				4535DF0220823260008EEC8B /* RecipeSearchTVC.swift in Sources */,
 				45037E9A207FC47E001B4F09 /* RequestSubmitter.swift in Sources */,
+				45185CAD2083F3F200870371 /* ImageVC.swift in Sources */,
 				45A7440920835CA100718839 /* FavoriteRecipe+Extensions.swift in Sources */,
 				45A74400208357FB00718839 /* FavoriteRecipe+CoreDataClass.swift in Sources */,
 				45CD42E9207D38E700B3597B /* Eat_Good.xcdatamodeld in Sources */,
