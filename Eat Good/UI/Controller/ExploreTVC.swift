@@ -20,12 +20,15 @@ class ExploreTVC: UITableViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        refreshContent()
+        if followedFoods.map({$0.name}) != FollowedFoodManager.all {
+            refreshContent()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        followedFoods.forEach { $0.recipesWithImages.removeAll() }
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -50,33 +53,45 @@ class ExploreTVC: UITableViewController {
         return followedFoods[section].name
     }
     
+    // MARK: - Content refresh
+    
     func refreshContent() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let dispatchGroup = DispatchGroup()
-        let followedFoods = FollowedFoodManager.all.map{FollowedFood(name: $0)}
+        followedFoods = FollowedFoodManager.all.map{FollowedFood(name: $0)}
+        tableView.reloadData()
         followedFoods.forEach { followedFood in
             dispatchGroup.enter()
             recipeSearchRetriever.retrieveRecipes(page: 1, searchedString: followedFood.name) {
                 guard let recipes = $0 else { return }
                 followedFood.recipesWithImages = recipes.map{($0, nil)}
                 dispatchGroup.leave()
-                for index in 0..<recipes.count {
-                    guard let imageUrl = recipes[index].imageUrl else { return }
-                    self.imageRetriever.retrieveImage(urlString: imageUrl) {
-                        followedFood.recipesWithImages[index].image = $0 ?? UIImage()
-                    }
-                }
             }
         }
         dispatchGroup.notify(queue: DispatchQueue.main, execute: {
-            self.followedFoods = followedFoods
             self.tableView.reloadData()
+            self.refreshImages()
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         })
     }
     
-    func onRefreshContentFinish() {
-        
+    func refreshImages() {
+        for followedFoodIndex in 0..<followedFoods.count {
+            let followedFood = followedFoods[followedFoodIndex]
+            for recipeIndex in 0..<followedFood.recipesWithImages.count {
+                guard let imageUrl = followedFood.recipesWithImages[recipeIndex].recipe.imageUrl else { return }
+                self.imageRetriever.retrieveImage(urlString: imageUrl) {
+                    guard let image = $0 else { return }
+                    followedFood.recipesWithImages[recipeIndex].image = image
+                    DispatchQueue.main.async {
+                        guard let tableCell = self.tableView.cellForRow(at: IndexPath(row: 0, section: followedFoodIndex)) as? FollowedFoodTableCell else { return }
+                        tableCell.recipesWithImages[recipeIndex].image = image
+                        guard let collectionCell = tableCell.collectionView.cellForItem(at: IndexPath(row: recipeIndex, section: 0)) as? RecipeCollectionCell else { return }
+                        collectionCell.setFoodImage(image)
+                    }
+                }
+            }
+        }
     }
     
     class FollowedFood {
@@ -94,7 +109,7 @@ class FollowedFoodTableCell: UITableViewCell, UICollectionViewDataSource, UIColl
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var recipesWithImages = [(recipe: Recipe, image: UIImage?)]()
+    var recipesWithImages = [(recipe: Recipe, image: UIImage?)]()
     private var recipeAction: ((_ recipe: Recipe, _ image: UIImage?) -> Void)!
     override func awakeFromNib() {
         super.awakeFromNib()

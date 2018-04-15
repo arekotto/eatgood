@@ -51,6 +51,12 @@ class FollowedFoodEditTVC: UITableViewController {
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
+        guard FollowedFoodManager.all.count < 10 else {
+            let title = NSLocalizedString("Already Following 10", comment: "")
+            let message = NSLocalizedString("You already have 10 types of food followed. Please remove some of them before adding any more.", comment: "")
+            presentAlertWithOkAction(title: title, message: message)
+            return
+        }
         let title = NSLocalizedString("Follow Food", comment: "")
         let message = NSLocalizedString("Type in the food you want to see in the explore tab.", comment: "")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
