@@ -22,8 +22,23 @@ class RecipeSearchRetriever: RequestSubmitter {
         }
     }
     
-    struct SearchResultTO: Codable {
+    func retrieveIngredients(recipeId: String, completion: @escaping (_: [String]?) -> Void) {
+        let request = URLRequest(url: FoodToForkApi.getRecipeURL(id: recipeId))
+        submitRequest(request, parseTo: ReciepeIngredients.self) {
+            completion($0?.recipe.ingredients)
+        }
+    }
+    
+    private struct SearchResultTO: Codable {
         var count: Int
         var recipes: [Recipe]
+    }
+    
+    private struct ReciepeIngredients: Codable {
+        var recipe: Recipe
+        
+        struct Recipe: Codable {
+            var ingredients: [String]
+        }
     }
 }

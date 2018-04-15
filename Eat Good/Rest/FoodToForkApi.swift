@@ -24,4 +24,10 @@ struct FoodToForkApi {
         urlComponents.queryItems = queryItems
         return urlComponents.url!
     }
+    
+    static func getRecipeURL(id: String) -> URL {
+        var urlComponents = URLComponents(string: "http://food2fork.com/api/get")!
+        urlComponents.queryItems = [URLQueryItem(name: "key", value: key), URLQueryItem(name: "rId", value: id)]
+        return urlComponents.url!
+    }
 }

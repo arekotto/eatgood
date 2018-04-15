@@ -10,17 +10,17 @@ import UIKit
 
 class ExploreTVC: UITableViewController {
     
-    private var followedFoodNames = FollowedFoodManager.all
+    private var followedFoods = [FollowedFood]()
+    
+    private var recipeSearchRetriever = RecipeSearchRetriever()
+    private var imageRetriever = ImageRetriever()
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if followedFoodNames != FollowedFoodManager.all {
-            followedFoodNames = FollowedFoodManager.all
-            tableView.reloadData()
-        }
+        refreshContent()
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,7 +31,7 @@ class ExploreTVC: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return followedFoodNames.count
+        return followedFoods.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -40,12 +40,53 @@ class ExploreTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "followedFoodTableCell") as! FollowedFoodTableCell
-        cell.setup(with: followedFoodNames[indexPath.row])
+        cell.setup(withRecipesWithImages: followedFoods[indexPath.section].recipesWithImages) {
+            self.pushRecipeDetailsTVC(recipe: $0, image: $1)
+        }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return followedFoodNames[section]
+        return followedFoods[section].name
+    }
+    
+    func refreshContent() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        let dispatchGroup = DispatchGroup()
+        let followedFoods = FollowedFoodManager.all.map{FollowedFood(name: $0)}
+        followedFoods.forEach { followedFood in
+            dispatchGroup.enter()
+            recipeSearchRetriever.retrieveRecipes(page: 1, searchedString: followedFood.name) {
+                guard let recipes = $0 else { return }
+                followedFood.recipesWithImages = recipes.map{($0, nil)}
+                dispatchGroup.leave()
+                for index in 0..<recipes.count {
+                    guard let imageUrl = recipes[index].imageUrl else { return }
+                    self.imageRetriever.retrieveImage(urlString: imageUrl) {
+                        followedFood.recipesWithImages[index].image = $0 ?? UIImage()
+                    }
+                }
+            }
+        }
+        dispatchGroup.notify(queue: DispatchQueue.main, execute: {
+            self.followedFoods = followedFoods
+            self.tableView.reloadData()
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        })
+    }
+    
+    func onRefreshContentFinish() {
+        
+    }
+    
+    class FollowedFood {
+        var name: String
+        var recipesWithImages: [(recipe: Recipe, image: UIImage?)]
+        
+        init(name: String, recipesWithImages: [(recipe: Recipe, image: UIImage?)] = []) {
+            self.name = name
+            self.recipesWithImages = recipesWithImages
+        }
     }
 }
 
@@ -53,57 +94,39 @@ class FollowedFoodTableCell: UITableViewCell, UICollectionViewDataSource, UIColl
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var imageRetriever = ImageRetriever()
-    private var recipeSearchRetriever = RecipeSearchRetriever()
-
-    private var recipes = [Recipe]()
-    
-    private var imageCache = Cache<UIImage>(maxSize: 20)
-    
+    private var recipesWithImages = [(recipe: Recipe, image: UIImage?)]()
+    private var recipeAction: ((_ recipe: Recipe, _ image: UIImage?) -> Void)!
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
-    func setup(with followedFoodName: String) {
-        imageCache.removeAll()
-        recipeSearchRetriever.retrieveRecipes(page: 1, searchedString: followedFoodName) {
-            guard let recipes = $0 else { return }
-            self.recipes = recipes
-            DispatchQueue.main.async {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                self.collectionView.reloadData()
-            }
-        }
+    func setup(withRecipesWithImages recipesWithImages: [(recipe: Recipe, image: UIImage?)], recipeAction: @escaping (_ recipe: Recipe, _ image: UIImage?) -> Void) {
+        self.recipesWithImages = recipesWithImages
+        self.recipeAction = recipeAction
+        collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recipes.count
+        return recipesWithImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "foodCollectionCell", for: indexPath) as! RecipeCollectionCell
-        cell.setup(with: recipes[indexPath.row])
+        let recipeWithImage = recipesWithImages[indexPath.row]
+        cell.setup(with: recipeWithImage.recipe)
+        if let image = recipeWithImage.image {
+            cell.setFoodImage(image)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let imgIndex = indexPath.row
-        let recipe = recipes[imgIndex]
-        guard let imageUrl = recipe.imageUrl else { return }
-        
-        let recipeCollectionCell = cell as! RecipeCollectionCell
-        if let image = imageCache.object(forKey: imgIndex) {
-            recipeCollectionCell.setFoodImage(image)
-        } else {
-            imageRetriever.retrieveImage(urlString: imageUrl) { image in
-                guard let img = image else { return }
-                self.imageCache.insert(object: img, forKey: imgIndex)
-                DispatchQueue.main.async {
-                    guard recipeCollectionCell.tag == imgIndex else { return }
-                    recipeCollectionCell.setFoodImage(img)
-                }
-            }
-        }
+
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let recipeWithImage = recipesWithImages[indexPath.row]
+        recipeAction(recipeWithImage.recipe, recipeWithImage.image)
     }
 }
 

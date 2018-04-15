@@ -9,11 +9,11 @@
 import Foundation
 
 struct Recipe: Codable {
+    var recipeId: String
     var title: String
     var publisher: String
     var imageUrl: String?
     var publisherUrl: String
     var socialRank: Double
-    var f2fUrl: String
     var sourceUrl: String
 }

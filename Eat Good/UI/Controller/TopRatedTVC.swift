@@ -18,6 +18,8 @@ class TopRatedTVC: UITableViewController {
     
     private var apiPageIndex = 1
     private var maxApiPageIndex = 5
+
+    private let detailsSegueId = "showDetails"
     
     private let refreshInterval = 10
     private var lastRefresh: Date?
@@ -82,6 +84,10 @@ class TopRatedTVC: UITableViewController {
                 refreshContentForApiPageIndex()
             }
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        pushRecipeDetailsTVC(recipe: recipes[indexPath.row], image: imageCache.object(forKey: indexPath.row))
     }
     
     func shouldLoadNextRecipes(currentlyDisplayedRow: Int) -> Bool {

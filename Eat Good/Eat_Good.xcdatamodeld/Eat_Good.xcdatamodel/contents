@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FavoriteRecipe" representedClassName="FavoriteRecipe" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ingredients" attributeType="Transformable" customClassName="[String]" syncable="YES"/>
+        <attribute name="publisher" attributeType="String" syncable="YES"/>
+        <attribute name="publisherUrl" attributeType="String" syncable="YES"/>
+        <attribute name="recipeId" attributeType="String" syncable="YES"/>
+        <attribute name="sourceUrl" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="userRating" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="FavoriteRecipe" positionX="-63" positionY="-18" width="128" height="180"/>
+    </elements>
 </model>

@@ -10,8 +10,8 @@ import Foundation
 
 class Cache<T> {
     
-    var keys = [Int]()
-    var cachedObjects = [Int: T]()
+    private var keys = [Int]()
+    private var cachedObjects = [Int: T]()
     let maxSize: UInt
     
     init(maxSize: UInt) {
