@@ -19,6 +19,8 @@ class RecipeDetailsTVC: UITableViewController {
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var publisherLabel: UILabel!
 
+    private var previewShareAction: ((_ recipe: Recipe) -> Void)?
+    
     private var recipe: Recipe!
     private var ingredients: [String]?
     private var image: UIImage?
@@ -74,10 +76,11 @@ class RecipeDetailsTVC: UITableViewController {
         }
     }
     
-    func setup(recipe: Recipe, ingredients: [String]? = nil , image: UIImage? = nil) {
+    func setup(recipe: Recipe, ingredients: [String]? = nil , image: UIImage? = nil, previewShareAction: ((_ recipe: Recipe) -> Void)? = nil) {
         self.recipe = recipe
         self.image = image
         self.ingredients = ingredients
+        self.previewShareAction = previewShareAction
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -124,21 +127,46 @@ class RecipeDetailsTVC: UITableViewController {
     
     @IBAction func favoriteButtonTapped(_ sender: UIBarButtonItem) {
         if existsInCoreData {
-            moc.delete(recipeAsManagedObject!)
-            favoriteButton.image = UIImage(named: "FavoriteBorderButtonIcon")
+            removeFromFavorites()
         } else {
-            let favoriteRecipe = NSEntityDescription.insertNewObject(forEntityName: FavoriteRecipe.entityName, into: moc) as! FavoriteRecipe
-            favoriteRecipe.update(basedOn: recipe, ingredients: ingredients, image: image)
-            favoriteButton.image = UIImage(named: "FavoriteButtonIcon")
+            addToFavorites()
         }
         try! moc.save()
     }
     
+    private func addToFavorites() {
+        let favoriteRecipe = NSEntityDescription.insertNewObject(forEntityName: FavoriteRecipe.entityName, into: moc) as! FavoriteRecipe
+        favoriteRecipe.update(basedOn: recipe, ingredients: ingredients, image: image)
+        favoriteButton.image = UIImage(named: "FavoriteButtonIcon")
+    }
+    
+    private func removeFromFavorites() {
+        moc.delete(recipeAsManagedObject!)
+        favoriteButton.image = UIImage(named: "FavoriteBorderButtonIcon")
+    }
+    
     @IBAction func shareButtonTapped(_ sender: UIButton) {
-        let activityItems = [URL(string: recipe.sourceUrl)!]
-        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = sender
-        present(activityViewController, animated: true, completion: nil)
+        shareRecipe(recipe, sourceView: sender)
+    }
+    
+    override var previewActionItems: [UIPreviewActionItem] {
+        
+        let favoriteAction: UIPreviewAction
+        if existsInCoreData {
+            let title = NSLocalizedString("Unfavorite", comment: "")
+            favoriteAction = UIPreviewAction(title: title, style: .destructive) { _, _ in
+                self.removeFromFavorites()
+            }
+        } else {
+            let title = NSLocalizedString("Favorite", comment: "")
+            favoriteAction = UIPreviewAction(title: title, style: .default) { _, _ in
+                self.addToFavorites()
+            }
+        }
+        let shareAction = UIPreviewAction(title: NSLocalizedString("Share", comment: ""), style: .default) {_,_  in
+            self.previewShareAction?(self.recipe)
+        }
+        return [favoriteAction, shareAction]
     }
 }
 

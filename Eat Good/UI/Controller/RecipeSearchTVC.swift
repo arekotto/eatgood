@@ -80,7 +80,9 @@ class RecipeSearchTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let imageIndex = indexPath.row
-        pushRecipeDetailsTVC(recipe: searchedRecipes[imageIndex], image: imageCache.object(forKey: imageIndex))
+        let cell = tableView.cellForRow(at: indexPath)
+        let recipeDetailsTVC = getRecipeDetailsTVC(recipe: searchedRecipes[imageIndex], image: imageCache.object(forKey: imageIndex), shareActionSourceView: cell)
+        navigationController?.pushViewController(recipeDetailsTVC, animated: true)
     }
     
     // MARK: - SearchCotroller setup

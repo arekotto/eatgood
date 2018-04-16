@@ -44,7 +44,8 @@ class ExploreTVC: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "followedFoodTableCell") as! FollowedFoodTableCell
         cell.setup(withRecipesWithImages: followedFoods[indexPath.section].recipesWithImages) {
-            self.pushRecipeDetailsTVC(recipe: $0, image: $1)
+            let recipeDetailsTVC = self.getRecipeDetailsTVC(recipe: $0, image: $1, shareActionSourceView: tableView.cellForRow(at: indexPath)?.contentView)
+            self.navigationController?.pushViewController(recipeDetailsTVC, animated: true)
         }
         return cell
     }

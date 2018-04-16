@@ -32,12 +32,15 @@ class TopRatedTVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: tableView)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard shouldRefresh else { return }
-        refreshContentForApiPageIndex()
+        refreshContentForCurrentApiPageIndex()
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,20 +86,22 @@ class TopRatedTVC: UITableViewController {
             }
             if shouldLoadNextRecipes(currentlyDisplayedRow: imgIndex) {
                 apiPageIndex += 1
-                refreshContentForApiPageIndex()
+                refreshContentForCurrentApiPageIndex()
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        pushRecipeDetailsTVC(recipe: recipes[indexPath.row], image: imageCache.object(forKey: indexPath.row))
+        let cell = tableView.cellForRow(at: indexPath)
+        let recipeDetailsTVC = getRecipeDetailsTVC(recipe: recipes[indexPath.row], image: imageCache.object(forKey: indexPath.row), shareActionSourceView: cell)
+        navigationController?.pushViewController(recipeDetailsTVC, animated: true)
     }
     
     func shouldLoadNextRecipes(currentlyDisplayedRow: Int) -> Bool {
         return recipes.count - 4 < currentlyDisplayedRow
     }
     
-    func refreshContentForApiPageIndex() {
+    func refreshContentForCurrentApiPageIndex() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         recipeSearchRetriever.retrieveRecipes(page: apiPageIndex) {
             guard let recipes = $0 else { return }
@@ -114,3 +119,19 @@ class TopRatedTVC: UITableViewController {
     }
 }
 
+extension TopRatedTVC: UIViewControllerPreviewingDelegate {
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: location), let cell = tableView.cellForRow(at: indexPath) else {
+            return nil
+        }
+        let recipeDetailsTVC = getRecipeDetailsTVC(recipe: recipes[indexPath.row], image: imageCache.object(forKey: indexPath.row), shareActionSourceView: cell)
+        previewingContext.sourceRect = cell.frame
+        
+        return recipeDetailsTVC
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
+    }
+}

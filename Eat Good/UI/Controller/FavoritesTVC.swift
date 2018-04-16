@@ -44,7 +44,9 @@ class FavoritesTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let favoriteRecipe = favoriteRecipes[indexPath.row]
-        pushRecipeDetailsTVC(recipe: favoriteRecipe.extractRecipe(), image: favoriteRecipe.image, ingredients: favoriteRecipe.ingredients)
+        let cell = tableView.cellForRow(at: indexPath)
+        let recipeDetailsTVC = getRecipeDetailsTVC(recipe: favoriteRecipe.extractRecipe(), image: favoriteRecipe.image, ingredients: favoriteRecipe.ingredients, shareActionSourceView: cell)
+        navigationController?.pushViewController(recipeDetailsTVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
