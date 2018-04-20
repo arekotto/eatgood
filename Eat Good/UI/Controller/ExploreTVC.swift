@@ -50,6 +50,12 @@ class ExploreTVC: UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let collectionView = (cell as! FollowedFoodTableCell).collectionView!
+        collectionView.tag = indexPath.section
+        registerForPreviewing(with: self, sourceView: collectionView)
+    }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return followedFoods[section].name
     }
@@ -106,67 +112,24 @@ class ExploreTVC: UITableViewController {
     }
 }
 
-class FollowedFoodTableCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    var recipesWithImages = [(recipe: Recipe, image: UIImage?)]()
-    private var recipeAction: ((_ recipe: Recipe, _ image: UIImage?) -> Void)!
-    override func awakeFromNib() {
-        super.awakeFromNib()
+extension ExploreTVC: UIViewControllerPreviewingDelegate {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        print("x ", location.x, " y ", location.y)
+        let collectionView = previewingContext.sourceView as! UICollectionView
+        guard let collectionIndexPath = collectionView.indexPathForItem(at: location) else { return nil }
+        guard let collectionCell = collectionView.cellForItem(at: collectionIndexPath) else { return nil}
+        
+        let recipeWithImage = self.followedFoods[collectionView.tag].recipesWithImages[collectionIndexPath.row]
+        let recipeDetailsTVC = getRecipeDetailsTVC(recipe: recipeWithImage.recipe, image: recipeWithImage.image, shareActionSourceView: collectionCell)
+        previewingContext.sourceRect = collectionCell.frame
+        
+        return recipeDetailsTVC
     }
     
-    func setup(withRecipesWithImages recipesWithImages: [(recipe: Recipe, image: UIImage?)], recipeAction: @escaping (_ recipe: Recipe, _ image: UIImage?) -> Void) {
-        self.recipesWithImages = recipesWithImages
-        self.recipeAction = recipeAction
-        collectionView.reloadData()
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recipesWithImages.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "foodCollectionCell", for: indexPath) as! RecipeCollectionCell
-        let recipeWithImage = recipesWithImages[indexPath.row]
-        cell.setup(with: recipeWithImage.recipe)
-        if let image = recipeWithImage.image {
-            cell.setFoodImage(image)
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let recipeWithImage = recipesWithImages[indexPath.row]
-        recipeAction(recipeWithImage.recipe, recipeWithImage.image)
-    }
 }
 
-class RecipeCollectionCell: UICollectionViewCell {
-    @IBOutlet weak var foodImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var wrappingView: UIView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        wrappingView.layer.cornerRadius = 5
-    }
-    
-    func setFoodImage(_ image: UIImage) {
-        foodImageView?.image = image
-        activityIndicator.stopAnimating()
-        activityIndicator.isHidden = true
-    }
-    
-    func setup(with recipe: Recipe) {
-        titleLabel.text = recipe.title
-        foodImageView?.image = nil
-        activityIndicator.startAnimating()
-        activityIndicator.isHidden = false
-    }
-}

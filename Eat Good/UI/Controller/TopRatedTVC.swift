@@ -32,6 +32,7 @@ class TopRatedTVC: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.view.backgroundColor = .white
         if traitCollection.forceTouchCapability == .available {
             registerForPreviewing(with: self, sourceView: tableView)
         }

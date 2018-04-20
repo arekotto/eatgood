@@ -16,6 +16,6 @@ class FollowedFoodManager {
     }
     
     private static var defaultFoodNames: [String] {
-        return ["breakfast", "lunch", "supper", "desert"]
+        return ["breakfast", "dinner", "desert"]
     }
 }

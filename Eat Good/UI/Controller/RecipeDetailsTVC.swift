@@ -170,32 +170,3 @@ class RecipeDetailsTVC: UITableViewController {
     }
 }
 
-class ImageTableCell: UITableViewCell {
-    
-    @IBOutlet weak var foodImageView: ScaledHeightImageView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        foodImageView.layer.cornerRadius = 10
-    }
-}
-
-class ScaledHeightImageView: UIImageView {
-    
-    override var intrinsicContentSize: CGSize {
-        
-        guard let image = self.image else {
-            return CGSize(width: -1.0, height: -1.0)
-        }
-        
-        let imageWidth = image.size.width
-        let imageHeight = image.size.height
-        let viewWidth = frame.size.width
-        
-        let ratio = viewWidth/imageWidth
-        let scaledHeight = imageHeight * ratio
-        
-        return CGSize(width: viewWidth, height: scaledHeight)
-    }
-    
-}
