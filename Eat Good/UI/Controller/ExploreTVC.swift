@@ -114,7 +114,6 @@ class ExploreTVC: UITableViewController {
 
 extension ExploreTVC: UIViewControllerPreviewingDelegate {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        print("x ", location.x, " y ", location.y)
         let collectionView = previewingContext.sourceView as! UICollectionView
         guard let collectionIndexPath = collectionView.indexPathForItem(at: location) else { return nil }
         guard let collectionCell = collectionView.cellForItem(at: collectionIndexPath) else { return nil}

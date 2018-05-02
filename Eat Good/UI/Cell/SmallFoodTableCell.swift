@@ -18,6 +18,12 @@ class SmallFoodTableCell: UITableViewCell {
         super.awakeFromNib()
         foodImageView.layer.cornerRadius = 10
     }
+    
+    func setup(with favoriteRecipe: FavoriteRecipe) {
+        titleLabel.text = favoriteRecipe.title
+        publisherLabel.text = favoriteRecipe.publisher
+        foodImageView.image = favoriteRecipe.image
+    }
 
     func setup(title: String?, publisher: String?, image: UIImage? = nil) {
         titleLabel.text = title

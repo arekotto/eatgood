@@ -7,22 +7,18 @@
 //
 
 import UIKit
+import CoreData
 
-class FavoritesTVC: UITableViewController {
+class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
-    private var favoriteRecipes = [FavoriteRecipe]()
     private let moc = CoreDataManager.persistentContainer.viewContext
-
+    private var fetchController: NSFetchedResultsController<FavoriteRecipe>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableFooterView = UIView()
+        setupFetchController()
         updateEditingButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        favoriteRecipes = (try? moc.fetch(FavoriteRecipe.fetchRequest())) ?? []
-        tableView.reloadData()
+        tableView.tableFooterView = UIView()
     }
 
     // MARK: - Table view data source
@@ -32,25 +28,27 @@ class FavoritesTVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return favoriteRecipes.count
+        let count = fetchController.fetchedObjects?.count ?? 0
+        return count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "smallFoodTableCell") as! SmallFoodTableCell
-        let favoriteRecipe = favoriteRecipes[indexPath.row]
-        cell.setup(title: favoriteRecipe.title, publisher: favoriteRecipe.publisher, image: favoriteRecipe.image)
+        let favoriteRecipe = fetchController.object(at: indexPath)
+        cell.setup(with: favoriteRecipe)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let favoriteRecipe = favoriteRecipes[indexPath.row]
+        let favoriteRecipe = fetchController.object(at: indexPath)
         let cell = tableView.cellForRow(at: indexPath)
         let recipeDetailsTVC = getRecipeDetailsTVC(recipe: favoriteRecipe.extractRecipe(), image: favoriteRecipe.image, ingredients: favoriteRecipe.ingredients, shareActionSourceView: cell)
         navigationController?.pushViewController(recipeDetailsTVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return favoriteRecipes.isEmpty ? NSLocalizedString("Favorite recipes will appear here.", comment: "") : nil
+        let hasFavoriteRecipes = fetchController.fetchedObjects?.count ?? 0 > 0
+        return hasFavoriteRecipes ? nil : NSLocalizedString("Favorite recipes will appear here.", comment: "")
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -58,14 +56,50 @@ class FavoritesTVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        moc.delete(favoriteRecipes.remove(at: indexPath.row))
+        moc.delete(fetchController.object(at: indexPath))
         try! moc.save()
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let insertIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [insertIndexPath], with: .automatic)
+        case .update:
+            guard let updateIndexPath = indexPath else { return }
+            let cell = tableView.cellForRow(at: updateIndexPath) as! SmallFoodTableCell
+            guard let favRecipe = anObject as? FavoriteRecipe else { return }
+            cell.setup(with: favRecipe)
+        case .delete:
+            guard let deleteIndexPath = indexPath else { return }
+            tableView.deleteRows(at: [deleteIndexPath], with: .automatic)
+        case .move:
+            guard let deleteIndexPath = indexPath else { return }
+            tableView.deleteRows(at: [deleteIndexPath], with: .automatic)
+            guard let insertIndexPath = newIndexPath else { return }
+            tableView.insertRows(at: [insertIndexPath], with: .automatic)
+        }
+    }
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
     
     @objc func editingButtonTapped() {
         tableView.setEditing(!tableView.isEditing, animated: true)
         updateEditingButton()
+    }
+    
+    func setupFetchController() {
+        let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FavoriteRecipe.title), ascending: true)]
+        fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        fetchController.delegate = self
+        try? fetchController.performFetch()
     }
     
     func updateEditingButton() {
