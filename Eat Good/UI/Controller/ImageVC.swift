@@ -20,7 +20,6 @@ class ImageVC: UIViewController, UIScrollViewDelegate {
         
         scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 5
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,14 +27,9 @@ class ImageVC: UIViewController, UIScrollViewDelegate {
         imageView.image = image
         imageView.contentMode = .scaleAspectFit
         navigationController?.hidesBarsOnTap = true
-
-//        let tapper = UITapGestureRecognizer(target: self, action: #selector(toggleNavBar))
-//        tapper.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tapper)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-//        navigationController?.setNavigationBarHidden(false, animated: false)
         navigationController?.hidesBarsOnTap = false
     }
     
@@ -46,9 +40,5 @@ class ImageVC: UIViewController, UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
-    
-//    @objc func toggleNavBar() {
-//        navigationController?.setNavigationBarHidden(!navigationController!.isNavigationBarHidden, animated: true)
-//    }
     
 }

@@ -12,11 +12,11 @@ import CoreData
 class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
     private let moc = CoreDataManager.persistentContainer.viewContext
-    private var fetchController: NSFetchedResultsController<FavoriteRecipe>!
+    private var fetchedResultsController: NSFetchedResultsController<FavoriteRecipe>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupFetchController()
+        setupFetchedResultsController()
         updateEditingButton()
         tableView.tableFooterView = UIView()
     }
@@ -28,26 +28,26 @@ class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let count = fetchController.fetchedObjects?.count ?? 0
+        let count = fetchedResultsController.fetchedObjects?.count ?? 0
         return count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "smallFoodTableCell") as! SmallFoodTableCell
-        let favoriteRecipe = fetchController.object(at: indexPath)
+        let favoriteRecipe = fetchedResultsController.object(at: indexPath)
         cell.setup(with: favoriteRecipe)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let favoriteRecipe = fetchController.object(at: indexPath)
+        let favoriteRecipe = fetchedResultsController.object(at: indexPath)
         let cell = tableView.cellForRow(at: indexPath)
         let recipeDetailsTVC = getRecipeDetailsTVC(recipe: favoriteRecipe.extractRecipe(), image: favoriteRecipe.image, ingredients: favoriteRecipe.ingredients, shareActionSourceView: cell)
         navigationController?.pushViewController(recipeDetailsTVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let hasFavoriteRecipes = fetchController.fetchedObjects?.count ?? 0 > 0
+        let hasFavoriteRecipes = fetchedResultsController.fetchedObjects?.count ?? 0 > 0
         return hasFavoriteRecipes ? nil : NSLocalizedString("Favorite recipes will appear here.", comment: "")
     }
     
@@ -56,7 +56,7 @@ class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        moc.delete(fetchController.object(at: indexPath))
+        moc.delete(fetchedResultsController.object(at: indexPath))
         try! moc.save()
     }
     
@@ -94,12 +94,12 @@ class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
         updateEditingButton()
     }
     
-    func setupFetchController() {
+    func setupFetchedResultsController() {
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FavoriteRecipe.title), ascending: true)]
-        fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        fetchController.delegate = self
-        try? fetchController.performFetch()
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
     }
     
     func updateEditingButton() {

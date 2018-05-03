@@ -25,13 +25,6 @@ class RecipeSearchTVC: UITableViewController {
         setupSearchController()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if #available(iOS 11, *) {
-            navigationItem.hidesSearchBarWhenScrolling = true
-        }
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         searchController.isActive = false
@@ -98,6 +91,12 @@ class RecipeSearchTVC: UITableViewController {
         searchController.searchBar.delegate = self
         searchController.definesPresentationContext = true
     }
+    
+    func reloadTableViewData() {
+        tableView.beginUpdates()
+        tableView.reloadSections([0], with: .automatic)
+        tableView.endUpdates()
+    }
 }
 
 extension RecipeSearchTVC: UISearchBarDelegate {
@@ -105,14 +104,14 @@ extension RecipeSearchTVC: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let searchedString = searchBar.text, searchedString != "" else {
             searchedRecipes.removeAll()
-            tableView.reloadData()
+            reloadTableViewData()
             return
         }
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         recipeSearchRetriever.retrieveRecipes(page: 1, searchedString: searchedString) { aa in
             DispatchQueue.main.async {
                 self.searchedRecipes = aa ?? []
-                self.tableView.reloadData()
+                self.reloadTableViewData()
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
             }
         }
@@ -120,6 +119,6 @@ extension RecipeSearchTVC: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchedRecipes.removeAll()
-        tableView.reloadData()
+        reloadTableViewData()
     }
 }

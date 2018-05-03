@@ -10,8 +10,10 @@ import Foundation
 
 struct FoodToForkApi {
     
-//    private static let key = Bundle.main.object(forInfoDictionaryKey: "APIKey") as! String
-    private static let key = "0822644115e106ceb90b5f5c3575e697"
+    private static let key = Bundle.main.object(forInfoDictionaryKey: "APIKey") as! String
+    
+//    for debug
+//    private static let key = "0822644115e106ceb90b5f5c3575e697"
 
     static func getSearchUrl(query: String? = nil, page: String? = nil) -> URL {
         var urlComponents = URLComponents(string: "http://food2fork.com/api/search")!
