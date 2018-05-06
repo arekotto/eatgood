@@ -30,6 +30,7 @@ class ImageVC: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         navigationController?.hidesBarsOnTap = false
     }
     
