@@ -19,6 +19,9 @@ class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
         setupFetchedResultsController()
         updateEditingButton()
         tableView.tableFooterView = UIView()
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: tableView)
+        }
     }
 
     // MARK: - Table view data source
@@ -96,7 +99,7 @@ class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
     func setupFetchedResultsController() {
         let fetchRequest: NSFetchRequest<FavoriteRecipe> = FavoriteRecipe.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FavoriteRecipe.title), ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(FavoriteRecipe.dateAdded), ascending: true)]
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
@@ -110,5 +113,23 @@ class FavoritesTVC: UITableViewController, NSFetchedResultsControllerDelegate {
             let title = NSLocalizedString("Edit", comment: "")
             navigationItem.setLeftBarButton(UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(editingButtonTapped)), animated: true)
         }
+    }
+}
+
+extension FavoritesTVC: UIViewControllerPreviewingDelegate {
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = tableView.indexPathForRow(at: location), let cell = tableView.cellForRow(at: indexPath) else {
+            return nil
+        }
+        let recipe = fetchedResultsController.object(at: indexPath)
+        let recipeDetailsTVC = getRecipeDetailsTVC(recipe: recipe.extractRecipe(), image: recipe.image, shareActionSourceView: cell)
+        previewingContext.sourceRect = cell.frame
+        
+        return recipeDetailsTVC
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
     }
 }

@@ -136,7 +136,7 @@ class RecipeDetailsTVC: UITableViewController {
     
     private func addToFavorites() {
         let favoriteRecipe = NSEntityDescription.insertNewObject(forEntityName: FavoriteRecipe.entityName, into: moc) as! FavoriteRecipe
-        favoriteRecipe.update(basedOn: recipe, ingredients: ingredients, image: image)
+        favoriteRecipe.update(basedOn: recipe, dateAdded: Date(), ingredients: ingredients, image: image)
         favoriteButton.image = UIImage(named: "FavoriteButtonIcon")
     }
     

@@ -33,6 +33,7 @@ extension FavoriteRecipe {
     @NSManaged public var imageUrl: String?
     @NSManaged public var imageData: Data?
     @NSManaged public var title: String
+    @NSManaged public var dateAdded: Date
 
 }
 

@@ -21,9 +21,10 @@ extension FavoriteRecipe {
 }
 
 extension FavoriteRecipe {
-    func update(basedOn recipe: Recipe, ingredients: [String]?, image: UIImage?) {
+    func update(basedOn recipe: Recipe, dateAdded: Date, ingredients: [String]?, image: UIImage?) {
         self.ingredients = ingredients
         self.image = image
+        self.dateAdded = dateAdded
         recipeId = recipe.recipeId
         publisher = recipe.publisher
         userRating = recipe.socialRank
