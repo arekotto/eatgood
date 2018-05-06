@@ -10,17 +10,18 @@ import UIKit
 
 class ExploreTVC: UITableViewController {
     
+    private var isPerformingRecipeFetch = false
     private var followedFoods = [FollowedFood]()
     
     private var recipeSearchRetriever = RecipeSearchRetriever()
     private var imageRetriever = ImageRetriever()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+    
+    private var shouldPerfomRefresh: Bool { return followedFoods.map({$0.name}) != FollowedFoodManager.all }
     
     override func viewWillAppear(_ animated: Bool) {
-        if followedFoods.map({$0.name}) != FollowedFoodManager.all {
+        super.viewWillAppear(animated)
+        if shouldPerfomRefresh {
+            isPerformingRecipeFetch = true
             refreshContent()
         }
     }
@@ -47,6 +48,7 @@ class ExploreTVC: UITableViewController {
             let recipeDetailsTVC = self.getRecipeDetailsTVC(recipe: $0, image: $1, shareActionSourceView: tableView.cellForRow(at: indexPath)?.contentView)
             self.navigationController?.pushViewController(recipeDetailsTVC, animated: true)
         }
+        isPerformingRecipeFetch ? cell.showLoadingIndicator() : cell.hideLoadingIndicator()
         return cell
     }
     
@@ -76,6 +78,7 @@ class ExploreTVC: UITableViewController {
             }
         }
         dispatchGroup.notify(queue: DispatchQueue.main, execute: {
+            self.isPerformingRecipeFetch = false
             self.tableView.reloadData()
             self.refreshImages()
             UIApplication.shared.isNetworkActivityIndicatorVisible = false

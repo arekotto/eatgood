@@ -11,17 +11,19 @@ import UIKit
 class FollowedFoodTableCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var recipesWithImages = [(recipe: Recipe, image: UIImage?)]()
     private var recipeAction: ((_ recipe: Recipe, _ image: UIImage?) -> Void)!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
     
     func setup(withRecipesWithImages recipesWithImages: [(recipe: Recipe, image: UIImage?)], recipeAction: @escaping (_ recipe: Recipe, _ image: UIImage?) -> Void) {
         self.recipesWithImages = recipesWithImages
         self.recipeAction = recipeAction
-        collectionView.reloadData()
+        collectionView.reloadSections([0])
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -38,12 +40,18 @@ class FollowedFoodTableCell: UITableViewCell, UICollectionViewDataSource, UIColl
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let recipeWithImage = recipesWithImages[indexPath.row]
         recipeAction(recipeWithImage.recipe, recipeWithImage.image)
+    }
+    
+    func showLoadingIndicator() {
+        activityIndicator.startAnimating()
+        activityIndicator.isHidden = false
+    }
+    
+    func hideLoadingIndicator() {
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
     }
 }

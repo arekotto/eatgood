@@ -280,15 +280,25 @@
                                                 <outlet property="delegate" destination="0fi-tc-M7v" id="UUt-pK-evL"/>
                                             </connections>
                                         </collectionView>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="lb3-q0-Ktk">
+                                            <rect key="frame" x="162" y="74.5" width="50" height="50"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="Lbv-nY-F6a"/>
+                                                <constraint firstAttribute="width" constant="50" id="RIv-HI-z9M"/>
+                                            </constraints>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="lb3-q0-Ktk" firstAttribute="centerY" secondItem="iCY-JB-DsJ" secondAttribute="centerY" id="1Y5-Qe-NDG"/>
                                         <constraint firstItem="Z50-O5-M7s" firstAttribute="top" secondItem="iCY-JB-DsJ" secondAttribute="top" id="MWE-Fm-Tsw"/>
                                         <constraint firstAttribute="bottom" secondItem="Z50-O5-M7s" secondAttribute="bottom" id="Y6n-Mv-6Vw"/>
+                                        <constraint firstItem="lb3-q0-Ktk" firstAttribute="centerX" secondItem="iCY-JB-DsJ" secondAttribute="centerX" id="kj5-6Z-mHi"/>
                                         <constraint firstItem="Z50-O5-M7s" firstAttribute="leading" secondItem="iCY-JB-DsJ" secondAttribute="leading" id="lzz-PE-jNK"/>
                                         <constraint firstAttribute="trailing" secondItem="Z50-O5-M7s" secondAttribute="trailing" id="pPy-mZ-sbs"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="activityIndicator" destination="lb3-q0-Ktk" id="tUf-EE-ofN"/>
                                     <outlet property="collectionView" destination="Z50-O5-M7s" id="srl-ne-O2k"/>
                                 </connections>
                             </tableViewCell>
