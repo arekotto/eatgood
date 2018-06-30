@@ -64,7 +64,7 @@ class ExploreTVC: UITableViewController {
     
     // MARK: - Content refresh
     
-    func refreshContent() {
+    private func refreshContent() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let dispatchGroup = DispatchGroup()
         followedFoods = FollowedFoodManager.all.map{FollowedFood(name: $0)}
@@ -78,14 +78,18 @@ class ExploreTVC: UITableViewController {
             }
         }
         dispatchGroup.notify(queue: DispatchQueue.main, execute: {
-            self.isPerformingRecipeFetch = false
-            self.tableView.reloadData()
-            self.refreshImages()
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.contentDidRefresh()
         })
     }
     
-    func refreshImages() {
+    private func contentDidRefresh() {
+        isPerformingRecipeFetch = false
+        tableView.reloadData()
+        refreshImages()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    private func refreshImages() {
         for followedFoodIndex in 0..<followedFoods.count {
             let followedFood = followedFoods[followedFoodIndex]
             for recipeIndex in 0..<followedFood.recipesWithImages.count {
@@ -94,14 +98,18 @@ class ExploreTVC: UITableViewController {
                     guard let image = $0 else { return }
                     followedFood.recipesWithImages[recipeIndex].image = image
                     DispatchQueue.main.async {
-                        guard let tableCell = self.tableView.cellForRow(at: IndexPath(row: 0, section: followedFoodIndex)) as? FollowedFoodTableCell else { return }
-                        tableCell.recipesWithImages[recipeIndex].image = image
-                        guard let collectionCell = tableCell.collectionView.cellForItem(at: IndexPath(row: recipeIndex, section: 0)) as? RecipeCollectionCell else { return }
-                        collectionCell.setFoodImage(image)
+                        self.updateImageArrayAndCell(image, followedFoodIndex: followedFoodIndex, recipeIndex: recipeIndex)
                     }
                 }
             }
         }
+    }
+    
+    private func updateImageArrayAndCell(_ image: UIImage, followedFoodIndex: Int, recipeIndex: Int) {
+        guard let tableCell = self.tableView.cellForRow(at: IndexPath(row: 0, section: followedFoodIndex)) as? FollowedFoodTableCell else { return }
+        tableCell.recipesWithImages[recipeIndex].image = image
+        guard let collectionCell = tableCell.collectionView.cellForItem(at: IndexPath(row: recipeIndex, section: 0)) as? RecipeCollectionCell else { return }
+        collectionCell.setFoodImage(image)
     }
     
     class FollowedFood {
