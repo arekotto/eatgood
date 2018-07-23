@@ -11,6 +11,8 @@ import UIKit
 
 class FollowedFoodEditTVC: UITableViewController {
     
+    private let foodManager = FollowedFoodManager.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.isEditing = true
@@ -22,12 +24,12 @@ class FollowedFoodEditTVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FollowedFoodManager.all.count
+        return foodManager.all.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "titleTableCell") as! TitleTableCell
-        cell.titleLabel.text = FollowedFoodManager.all[indexPath.row]
+        cell.titleLabel.text = foodManager.all[indexPath.row]
         return cell
     }
     
@@ -37,21 +39,21 @@ class FollowedFoodEditTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        var followedFoodNames = FollowedFoodManager.all
+        var followedFoodNames = foodManager.all
         followedFoodNames.remove(at: indexPath.row)
-        FollowedFoodManager.all = followedFoodNames
+        foodManager.all = followedFoodNames
         tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        var followedFoodNames = FollowedFoodManager.all
+        var followedFoodNames = foodManager.all
         let followedFoodName = followedFoodNames.remove(at: sourceIndexPath.row)
         followedFoodNames.insert(followedFoodName, at: destinationIndexPath.row)
-        FollowedFoodManager.all = followedFoodNames
+        foodManager.all = followedFoodNames
     }
     
     @IBAction func addButtonTapped(_ sender: UIBarButtonItem) {
-        guard FollowedFoodManager.all.count < 10 else {
+        guard foodManager.all.count < 10 else {
             let title = NSLocalizedString("Already Following 10", comment: "")
             let message = NSLocalizedString("You already have 10 types of food followed. Please remove some of them before adding any more.", comment: "")
             presentAlertWithOkAction(title: title, message: message)
@@ -65,9 +67,9 @@ class FollowedFoodEditTVC: UITableViewController {
         }
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Follow", comment: ""), style: .default) { _ in
             guard let followedFood = alertController.textFields!.first!.text else { return }
-            var followedFoodNames = FollowedFoodManager.all
+            var followedFoodNames = self.foodManager.all
             followedFoodNames.append(followedFood)
-            FollowedFoodManager.all = followedFoodNames
+            self.foodManager.all = followedFoodNames
             self.tableView.insertRows(at: [IndexPath(row: followedFoodNames.count - 1, section: 0)], with: .automatic)
         })
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))

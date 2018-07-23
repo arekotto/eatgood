@@ -16,7 +16,7 @@ class ExploreTVC: UITableViewController {
     private var recipeSearchRetriever = RecipeSearchRetriever()
     private var imageRetriever = ImageRetriever()
     
-    private var shouldPerfomRefresh: Bool { return followedFoods.map({$0.name}) != FollowedFoodManager.all }
+    private var shouldPerfomRefresh: Bool { return followedFoods.map({$0.name}) != FollowedFoodManager.shared.all }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -67,7 +67,7 @@ class ExploreTVC: UITableViewController {
     private func refreshContent() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let dispatchGroup = DispatchGroup()
-        followedFoods = FollowedFoodManager.all.map{FollowedFood(name: $0)}
+        followedFoods = FollowedFoodManager.shared.all.map{FollowedFood(name: $0)}
         tableView.reloadData()
         followedFoods.forEach { followedFood in
             dispatchGroup.enter()

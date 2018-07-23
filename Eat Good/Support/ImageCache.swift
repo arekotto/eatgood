@@ -12,6 +12,7 @@ class Cache<T> {
     
     private var keys = [Int]()
     private var cachedObjects = [Int: T]()
+    
     let maxSize: UInt
     
     init(maxSize: UInt) {

@@ -9,13 +9,23 @@
 import Foundation
 
 class FollowedFoodManager {
-    static var all: [String] = (UserDefaults.standard.object(forKey: "followedFoodNames") as? [String]) ?? defaultFoodNames {
-        didSet {
-            UserDefaults.standard.set(all, forKey: "followedFoodNames")
+    
+    private init() {}
+    
+    static let shared: FollowedFoodManager = FollowedFoodManager()
+    
+    private let foodKey = "followedFoodNames"
+    
+    var all: [String] {
+        get {
+            return UserDefaults.standard.object(forKey: foodKey) as? [String] ?? defaultFoodNames
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: foodKey)
         }
     }
     
-    private static var defaultFoodNames: [String] {
+    private var defaultFoodNames: [String] {
         return ["breakfast", "dinner", "dessert"]
     }
 }
