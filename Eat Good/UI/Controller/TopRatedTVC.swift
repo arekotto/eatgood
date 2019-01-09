@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AMScrollingNavbar
 
 class TopRatedTVC: UITableViewController {
     
@@ -42,6 +43,16 @@ class TopRatedTVC: UITableViewController {
         super.viewWillAppear(animated)
         guard shouldRefresh else { return }
         refreshContentForCurrentApiPageIndex()
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.followScrollView(tableView, delay: 50.0)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.showNavbar(animated: true)
+        }
     }
 
     override func didReceiveMemoryWarning() {

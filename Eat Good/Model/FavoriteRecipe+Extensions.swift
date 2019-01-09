@@ -15,7 +15,7 @@ extension FavoriteRecipe {
             return imageData != nil ? UIImage(data: imageData!) : nil
         }
         set {
-            imageData = newValue != nil ? UIImagePNGRepresentation(newValue!) : nil
+            imageData = newValue != nil ? newValue!.pngData() : nil
         }
     }
 }
